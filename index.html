@@ -4,19 +4,122 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio | Hero Test</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Importing Inter Font -->
+    <!-- Google Fonts: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0a0a0a;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overflow: hidden; /* Keeps it clean for a hero test */
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 24px;
+            text-align: center;
+            background: radial-gradient(circle at center, #111 0%, #0a0a0a 100%);
+        }
+
+        .container {
+            max-width: 850px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            color: #a1a1aa;
+        }
+
+        h1 {
+            font-size: clamp(42px, 8vw, 82px);
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.05em;
+            margin-bottom: 24px;
+        }
+
+        .highlight {
+            background: linear-gradient(90.13deg, #ffffff 0%, #666666 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            font-size: clamp(16px, 2vw, 19px);
+            color: #71717a;
+            line-height: 1.6;
+            margin-bottom: 48px;
+            max-width: 580px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .btn.primary {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .btn.primary:hover {
+            transform: scale(1.05);
+            background-color: #f4f4f5;
+        }
+
+        .btn.secondary {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+    </style>
 </head>
 <body>
     <section class="hero">
         <div class="container">
-            <span class="badge">Available for Projects</span>
-            <h1>Crafting modern <span class="highlight">digital experiences.</span></h1>
-            <p>UI/UX Designer focused on minimalist and high-end aesthetics for tech-forward brands.</p>
+            <span class="badge">Open for Collaboration</span>
+            <h1>Modern design for <span class="highlight">premium brands.</span></h1>
+            <p>UI/UX Designer crafting high-fidelity interfaces with a focus on minimalism, precision, and motion.</p>
             <div class="cta-group">
-                <a href="#" class="btn primary">View Work</a>
-                <a href="#" class="btn secondary">Get in Touch</a>
+                <a href="#" class="btn primary">View Portfolio</a>
+                <a href="#" class="btn secondary">Say Hello</a>
             </div>
         </div>
     </section>
