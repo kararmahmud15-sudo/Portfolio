@@ -3,548 +3,650 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mixium Lab</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,900;1,400;1,900&family=Space+Mono:wght@400;700&family=Outfit:wght@200;300;400;600&display=swap" rel="stylesheet">
+<title>Mixium Lab — Design Agency</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600&family=Syne:wght@700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --black:#060606;
-  --cream:#F5F0E8;
-  --lime:#D4FF00;
-  --red:#FF2D2D;
-  --blue:#0028FF;
-  --mid:#111;
+  --bg:#05050A;
+  --surface:#0D0D18;
+  --border:rgba(255,255,255,0.06);
+  --text:#F0EEF8;
+  --muted:rgba(240,238,248,0.35);
+  --accent:#7B5CFF;
+  --lime:#C8FF57;
+  --pink:#FF4D8D;
+  --glow:rgba(123,92,255,0.15);
 }
 html{scroll-behavior:smooth}
-body{background:var(--cream);color:var(--black);font-family:'Outfit',sans-serif;overflow-x:hidden;cursor:none}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 
-/* CURSOR */
-.cursor{position:fixed;width:12px;height:12px;background:var(--red);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s,background 0.2s}
-.cursor-ring{position:fixed;width:40px;height:40px;border:1.5px solid var(--black);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width 0.3s,height 0.3s,transform 0.1s}
+/* ── NOISE OVERLAY ── */
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.4;pointer-events:none;z-index:0}
 
-/* LOADER */
-.loader{position:fixed;inset:0;background:var(--black);z-index:9990;display:flex;align-items:center;justify-content:center;transition:opacity 0.7s ease 0.3s,visibility 0.7s ease 0.3s}
-.loader.gone{opacity:0;visibility:hidden}
-.loader-text{font-family:'Bebas Neue',sans-serif;font-size:clamp(60px,10vw,140px);color:var(--cream);letter-spacing:6px;overflow:hidden}
-.loader-text span{display:inline-block;animation:slideUp 0.6s cubic-bezier(.16,1,.3,1) forwards;opacity:0}
-@keyframes slideUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
+/* ── CUSTOM CURSOR ── */
+#cur{position:fixed;width:8px;height:8px;background:var(--lime);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference;transition:width .2s,height .2s}
+#cur2{position:fixed;width:36px;height:36px;border:1px solid rgba(255,255,255,0.2);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .12s ease}
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;mix-blend-mode:difference;padding:24px 48px;display:flex;justify-content:space-between;align-items:center}
-.logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--cream);text-decoration:none}
-.nav-r{display:flex;align-items:center;gap:40px}
-.nav-link{font-family:'Space Mono',monospace;font-size:11px;color:var(--cream);text-decoration:none;letter-spacing:1px;text-transform:uppercase;position:relative}
-.nav-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--lime);transition:width 0.3s}
-.nav-link:hover::after{width:100%}
-.nav-open{width:32px;height:20px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer}
-.nav-open span{display:block;height:1.5px;background:var(--cream);transition:transform 0.3s}
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:0 48px;height:72px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:rgba(5,5,10,0.7);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+.n-logo{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;letter-spacing:0.5px;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px}
+.n-logo-dot{width:7px;height:7px;border-radius:50%;background:var(--lime);display:inline-block}
+.n-links{display:flex;align-items:center;gap:8px}
+.n-link{font-size:12px;font-weight:400;color:var(--muted);text-decoration:none;padding:8px 14px;border-radius:8px;transition:color .2s,background .2s;letter-spacing:0.3px}
+.n-link:hover{color:var(--text);background:rgba(255,255,255,0.05)}
+.n-cta{font-size:12px;font-weight:500;color:var(--bg);background:var(--lime);padding:9px 20px;border-radius:8px;text-decoration:none;letter-spacing:0.3px;transition:opacity .2s,transform .2s;display:flex;align-items:center;gap:6px}
+.n-cta:hover{opacity:.9;transform:translateY(-1px)}
+.n-menu{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.n-menu span{display:block;width:20px;height:1.5px;background:var(--text);transition:transform .3s}
 
-/* HERO */
-.hero{min-height:100vh;padding:0;display:grid;grid-template-rows:1fr auto;position:relative;overflow:hidden;background:var(--black)}
+/* ── HERO ── */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;overflow:hidden;padding:0 48px;padding-top:72px}
 
-.hero-bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:80px 80px;pointer-events:none}
+/* animated gradient orbs */
+.orb{position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none;animation:orbFloat 8s ease-in-out infinite}
+.orb1{width:600px;height:600px;background:rgba(123,92,255,0.18);top:-100px;right:-100px;animation-delay:0s}
+.orb2{width:500px;height:500px;background:rgba(255,77,141,0.1);bottom:-50px;left:-100px;animation-delay:-3s}
+.orb3{width:300px;height:300px;background:rgba(200,255,87,0.08);top:30%;left:40%;animation-delay:-6s}
+@keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.05)}66%{transform:translate(-20px,30px) scale(0.95)}}
 
-.hero-main{display:grid;grid-template-columns:1fr 1fr;min-height:100vh;position:relative}
+/* hero grid lines */
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent);pointer-events:none}
 
-.hero-left{padding:140px 60px 80px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid rgba(255,255,255,0.1)}
+.hero-inner{position:relative;z-index:2;max-width:1200px;margin:0 auto;width:100%;padding:60px 0}
 
-.hero-eyebrow{display:flex;align-items:center;gap:16px;margin-bottom:auto}
-.hero-eyebrow-line{width:40px;height:1px;background:var(--lime)}
-.hero-eyebrow-text{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5)}
+.hero-badge{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:40px;padding:8px 18px 8px 10px;margin-bottom:48px;font-size:11px;font-weight:500;letter-spacing:0.5px;color:var(--muted)}
+.hero-badge-dot{width:24px;height:24px;background:var(--surface);border-radius:50%;border:1px solid rgba(200,255,87,0.3);display:flex;align-items:center;justify-content:center}
+.hero-badge-dot::after{content:'';width:6px;height:6px;border-radius:50%;background:var(--lime)}
 
-.hero-title-block{flex:1;display:flex;flex-direction:column;justify-content:center;padding:40px 0}
-.hero-h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(80px,11vw,160px);line-height:0.9;letter-spacing:2px;color:var(--cream)}
-.hero-h1 .italic{font-family:'Playfair Display',serif;font-style:italic;font-weight:900;color:var(--lime)}
-.hero-h1 .outline{-webkit-text-stroke:1.5px var(--cream);color:transparent}
+.hero-title{font-family:'Syne',sans-serif;font-size:clamp(52px,7.5vw,112px);font-weight:800;line-height:1.0;letter-spacing:-3px;margin-bottom:32px}
+.hero-title .line{display:block;overflow:hidden}
+.hero-title .word{display:inline-block;animation:wordReveal .9s cubic-bezier(.16,1,.3,1) both}
+.hero-title .ital{font-family:'DM Serif Display',serif;font-style:italic;font-weight:400;color:var(--muted);letter-spacing:-2px}
+.hero-title .hi{position:relative;display:inline-block}
+.hero-title .hi::after{content:'';position:absolute;left:0;bottom:6px;right:0;height:3px;background:var(--lime);border-radius:2px;transform:scaleX(0);animation:lineReveal 0.6s cubic-bezier(.16,1,.3,1) 1s forwards}
+@keyframes wordReveal{from{transform:translateY(110%);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes lineReveal{to{transform:scaleX(1)}}
 
-.hero-bottom-left{display:flex;justify-content:space-between;align-items:flex-end}
-.hero-desc{font-size:14px;line-height:1.7;color:rgba(255,255,255,0.5);max-width:280px;font-weight:300}
-.hero-scroll{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);writing-mode:vertical-lr;display:flex;align-items:center;gap:12px}
-.hero-scroll::before{content:'';width:1px;height:60px;background:rgba(255,255,255,0.2)}
+.hero-sub{font-size:16px;font-weight:300;color:var(--muted);line-height:1.75;max-width:520px;margin-bottom:52px;opacity:0;animation:fadeUp .8s ease 0.7s forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
-.hero-right{padding:140px 0 0;display:flex;flex-direction:column;position:relative}
-.hero-number{font-family:'Bebas Neue',sans-serif;font-size:clamp(180px,22vw,320px);line-height:0.8;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,0.08);text-align:right;padding-right:40px;pointer-events:none;user-select:none}
-.hero-tag-cloud{padding:40px 48px;display:flex;flex-wrap:wrap;gap:12px;border-top:1px solid rgba(255,255,255,0.08)}
-.hero-tag{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:8px 16px;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);border-radius:40px;transition:all 0.3s;cursor:pointer}
-.hero-tag:hover{border-color:var(--lime);color:var(--lime)}
-.hero-tag.active{background:var(--lime);color:var(--black);border-color:var(--lime)}
+.hero-actions{display:flex;align-items:center;gap:16px;opacity:0;animation:fadeUp .8s ease 0.9s forwards}
+.btn-main{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:#fff;padding:14px 28px;border-radius:12px;font-size:13px;font-weight:500;text-decoration:none;letter-spacing:0.3px;transition:transform .2s,opacity .2s;position:relative;overflow:hidden}
+.btn-main::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,0.1);transform:translateX(-100%);transition:transform .3s}
+.btn-main:hover::before{transform:translateX(0)}
+.btn-main:hover{transform:translateY(-2px)}
+.btn-main .arr{width:20px;height:20px;background:rgba(255,255,255,0.2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;transition:transform .2s}
+.btn-main:hover .arr{transform:translateX(3px)}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;color:var(--text);padding:14px 28px;border-radius:12px;font-size:13px;font-weight:400;text-decoration:none;letter-spacing:0.3px;border:1px solid var(--border);transition:border-color .2s,background .2s}
+.btn-outline:hover{border-color:rgba(255,255,255,0.15);background:rgba(255,255,255,0.04)}
 
-.hero-cta-bar{background:var(--lime);padding:20px 60px;display:flex;justify-content:space-between;align-items:center}
-.hero-cta-bar a{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;color:var(--black);text-decoration:none;display:flex;align-items:center;gap:16px;transition:gap 0.3s}
-.hero-cta-bar a:hover{gap:28px}
-.hero-cta-bar span{font-family:'Space Mono',monospace;font-size:11px;color:rgba(0,0,0,0.5);letter-spacing:1px}
+.hero-stats{display:flex;gap:0;margin-top:80px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);opacity:0;animation:fadeUp .8s ease 1.1s forwards}
+.hs{flex:1;padding:28px 32px;border-right:1px solid var(--border)}
+.hs:last-child{border-right:none}
+.hs-num{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;letter-spacing:-1px;margin-bottom:4px;color:var(--text)}
+.hs-label{font-size:11px;font-weight:400;color:var(--muted);letter-spacing:0.5px}
 
-/* TICKER */
-.ticker{border-top:1px solid rgba(0,0,0,0.12);border-bottom:1px solid rgba(0,0,0,0.12);padding:14px 0;overflow:hidden;background:var(--cream)}
-.ticker-inner{display:inline-flex;animation:tick 20s linear infinite}
-.ticker-item{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:4px;padding:0 48px;color:var(--black);opacity:0.4}
-.ticker-item.hi{color:var(--red);opacity:1}
-@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* scroll indicator */
+.scroll-ind{position:absolute;bottom:40px;left:48px;z-index:2;display:flex;align-items:center;gap:12px;opacity:0;animation:fadeUp .8s ease 1.3s forwards}
+.scroll-line{width:40px;height:1px;background:rgba(255,255,255,0.15);position:relative;overflow:hidden}
+.scroll-line::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:var(--lime);animation:scan 2s ease-in-out infinite}
+@keyframes scan{0%{left:-100%}100%{left:100%}}
+.scroll-text{font-size:10px;font-weight:400;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
 
-/* WORK */
-.section-work{background:var(--cream)}
-.work-header{padding:80px 60px 40px;display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid rgba(0,0,0,0.1)}
-.work-title{font-family:'Playfair Display',serif;font-size:clamp(48px,6vw,80px);font-weight:900;font-style:italic;letter-spacing:-2px;line-height:1}
-.work-title em{font-style:normal;font-family:'Bebas Neue',sans-serif;letter-spacing:2px;font-size:0.9em}
-.work-count{font-family:'Space Mono',monospace;font-size:11px;color:rgba(0,0,0,0.4);letter-spacing:1px}
+/* ── MARQUEE ── */
+.marquee-wrap{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:16px 0;overflow:hidden;background:var(--surface)}
+.marquee-inner{display:inline-flex;animation:marq 25s linear infinite}
+.mi{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);padding:0 40px;display:flex;align-items:center;gap:40px}
+.mi-dot{width:4px;height:4px;border-radius:50%;background:var(--accent)}
+@keyframes marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-.work-list{}
-.work-item{display:grid;grid-template-columns:80px 1fr 200px 160px;align-items:center;padding:28px 60px;border-bottom:1px solid rgba(0,0,0,0.08);cursor:pointer;transition:background 0.2s;position:relative;overflow:hidden}
-.work-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:0;background:var(--black);transition:width 0.4s cubic-bezier(.16,1,.3,1)}
-.work-item:hover::before{width:100%}
-.work-item:hover .wi-num,.work-item:hover .wi-name,.work-item:hover .wi-type,.work-item:hover .wi-year{color:var(--cream)}
-.work-item:hover .wi-arrow{transform:translateX(8px)}
-.wi-num{font-family:'Space Mono',monospace;font-size:11px;color:rgba(0,0,0,0.25);position:relative;z-index:1;transition:color 0.4s}
-.wi-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,3vw,44px);letter-spacing:1px;position:relative;z-index:1;transition:color 0.4s}
-.wi-name sub{font-family:'Outfit',sans-serif;font-size:11px;font-weight:300;vertical-align:middle;margin-left:10px;opacity:0.5;text-transform:uppercase;letter-spacing:2px}
-.wi-type{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:rgba(0,0,0,0.4);position:relative;z-index:1;transition:color 0.4s}
-.wi-year{font-family:'Playfair Display',serif;font-style:italic;font-size:24px;color:rgba(0,0,0,0.15);text-align:right;position:relative;z-index:1;transition:color 0.4s}
-.wi-arrow{display:inline-block;transition:transform 0.3s;position:relative;z-index:1}
+/* ── WORK ── */
+.section{position:relative;z-index:1}
+.work-section{padding:120px 48px}
+.work-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:60px}
+.sec-eyebrow{font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.sec-eyebrow::before{content:'';width:20px;height:1px;background:var(--accent)}
+.sec-title{font-family:'Syne',sans-serif;font-size:clamp(36px,4vw,56px);font-weight:800;letter-spacing:-2px;line-height:1.05}
+.sec-title .dm{font-family:'DM Serif Display',serif;font-weight:400;font-style:italic}
+.see-all{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:500;color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:10px 20px;border-radius:8px;transition:all .2s}
+.see-all:hover{color:var(--text);border-color:rgba(255,255,255,0.15);background:rgba(255,255,255,0.04)}
 
-/* ABOUT SPLIT */
-.section-about{display:grid;grid-template-columns:1fr 1fr;min-height:80vh}
-.about-left{background:var(--black);color:var(--cream);padding:80px 60px;display:flex;flex-direction:column;justify-content:space-between}
-.about-left-top{}
-.about-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:40px;display:flex;align-items:center;gap:12px}
-.about-label::before{content:'';width:30px;height:1px;background:var(--red)}
-.about-big{font-family:'Bebas Neue',sans-serif;font-size:clamp(60px,8vw,110px);line-height:0.9;letter-spacing:2px}
-.about-big .red{color:var(--red)}
-.about-big .blue{color:var(--blue)}
-.about-body{font-size:15px;line-height:1.8;color:rgba(255,255,255,0.55);font-weight:300;max-width:440px;margin-top:32px}
-.about-left-bottom{display:flex;align-items:center;gap:24px;margin-top:60px}
-.about-cta{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--cream);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.3);padding-bottom:2px;transition:border-color 0.3s,color 0.3s}
-.about-cta:hover{color:var(--lime);border-color:var(--lime)}
+.work-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.wc{border-radius:20px;overflow:hidden;border:1px solid var(--border);cursor:pointer;group;transition:transform .3s,border-color .3s;position:relative}
+.wc:hover{transform:translateY(-4px);border-color:rgba(255,255,255,0.1)}
+.wc-thumb{height:280px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.wc:first-child .wc-thumb{height:380px}
+.wc:nth-child(2) .wc-thumb{height:380px}
+.wc-bg{position:absolute;inset:0;transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.wc:hover .wc-bg{transform:scale(1.04)}
+.wc-bg1{background:linear-gradient(135deg,#1a0a3e 0%,#2d1060 50%,#0d0520 100%)}
+.wc-bg2{background:linear-gradient(135deg,#0a1a0a 0%,#0d2b0a 50%,#051505 100%)}
+.wc-bg3{background:linear-gradient(135deg,#1a0a0a 0%,#2b0a0a 50%,#150505 100%)}
+.wc-bg4{background:linear-gradient(135deg,#0a0a1a 0%,#0a1a2b 50%,#050a15 100%)}
+.wc-deco{position:absolute;font-family:'Syne',sans-serif;font-size:120px;font-weight:800;opacity:0.05;letter-spacing:-4px;user-select:none}
+.wc-tag{position:absolute;top:20px;left:20px;font-size:10px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);padding:6px 12px;border-radius:6px;backdrop-filter:blur(10px)}
+.wc-arrow{position:absolute;top:20px;right:20px;width:36px;height:36px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px);color:var(--text);font-size:14px;opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
+.wc:hover .wc-arrow{opacity:1;transform:translateY(0)}
+.wc-info{padding:24px 28px;background:var(--surface);border-top:1px solid var(--border)}
+.wc-name{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;letter-spacing:-0.5px;margin-bottom:6px}
+.wc-meta{display:flex;justify-content:space-between;align-items:center}
+.wc-type{font-size:12px;color:var(--muted);font-weight:400}
+.wc-year{font-size:11px;color:var(--muted);font-weight:400}
 
-.about-right{background:var(--cream);padding:80px 60px;display:flex;flex-direction:column;justify-content:center}
-.about-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(0,0,0,0.1)}
-.asg-cell{background:var(--cream);padding:40px 36px}
-.asg-num{font-family:'Bebas Neue',sans-serif;font-size:72px;letter-spacing:-2px;line-height:1;color:var(--black)}
-.asg-num sup{font-size:32px}
-.asg-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,0,0,0.35);margin-top:8px;line-height:1.5}
+/* wide card */
+.wc.wide{grid-column:span 2}
+.wc.wide .wc-thumb{height:320px}
 
-/* PHILOSOPHY */
-.section-phil{background:var(--black);padding:120px 60px;position:relative;overflow:hidden}
-.phil-bg{position:absolute;top:-50%;right:-20%;font-family:'Bebas Neue',sans-serif;font-size:clamp(200px,30vw,500px);color:rgba(255,255,255,0.02);letter-spacing:10px;pointer-events:none;white-space:nowrap;line-height:1}
-.phil-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:60px;display:flex;align-items:center;gap:12px}
-.phil-label::before{content:'';width:30px;height:1px;background:var(--blue)}
-.phil-items{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.06)}
-.phil-item{background:var(--black);padding:56px 44px;position:relative;overflow:hidden}
-.phil-item::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--lime);transform:scaleX(0);transform-origin:left;transition:transform 0.4s cubic-bezier(.16,1,.3,1)}
-.phil-item:hover::after{transform:scaleX(1)}
-.phil-n{font-family:'Playfair Display',serif;font-style:italic;font-size:80px;color:rgba(255,255,255,0.06);line-height:1;margin-bottom:32px;font-weight:900}
-.phil-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;color:var(--cream);margin-bottom:16px}
-.phil-body{font-size:14px;line-height:1.75;color:rgba(255,255,255,0.45);font-weight:300}
+/* ── ABOUT ── */
+.about-section{padding:0 48px 120px}
+.about-inner{border-radius:24px;overflow:hidden;border:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr}
+.about-l{background:var(--surface);padding:72px 64px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid var(--border)}
+.about-headline{font-family:'Syne',sans-serif;font-size:clamp(36px,4vw,52px);font-weight:800;letter-spacing:-2px;line-height:1.08;margin-top:20px}
+.about-headline em{font-family:'DM Serif Display',serif;font-weight:400;font-style:italic;color:var(--accent)}
+.about-body{font-size:14px;font-weight:300;line-height:1.85;color:var(--muted);margin-top:28px}
+.about-links{display:flex;gap:12px;margin-top:40px}
+.al-btn{font-size:12px;font-weight:500;text-decoration:none;color:var(--text);border:1px solid var(--border);padding:10px 20px;border-radius:8px;transition:all .2s}
+.al-btn:hover{border-color:var(--accent);color:var(--accent)}
+.al-btn.solid{background:var(--accent);border-color:var(--accent);color:#fff}
+.al-btn.solid:hover{opacity:.9}
+.about-r{padding:72px 64px}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border-radius:16px;overflow:hidden;margin-top:20px}
+.as-cell{background:var(--surface);padding:36px 32px}
+.as-num{font-family:'Syne',sans-serif;font-size:48px;font-weight:800;letter-spacing:-2px;line-height:1;color:var(--text)}
+.as-unit{font-size:24px;color:var(--accent)}
+.as-label{font-size:11px;font-weight:400;color:var(--muted);margin-top:8px;letter-spacing:0.5px;line-height:1.5}
 
-/* SERVICES */
-.section-services{background:var(--cream);padding:120px 0}
-.services-header{padding:0 60px 60px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end}
-.services-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,7vw,96px);letter-spacing:2px;line-height:0.9;color:var(--black)}
-.services-sub{font-size:14px;line-height:1.75;color:rgba(0,0,0,0.5);font-weight:300;max-width:360px}
-.services-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(0,0,0,0.1)}
-.svc-card{padding:48px 36px;border-right:1px solid rgba(0,0,0,0.1);position:relative;overflow:hidden;cursor:pointer}
-.svc-card:last-child{border-right:none}
-.svc-card::before{content:'';position:absolute;inset:0;background:var(--black);transform:translateY(100%);transition:transform 0.5s cubic-bezier(.16,1,.3,1)}
-.svc-card:hover::before{transform:translateY(0)}
-.svc-card:hover .svc-icon,.svc-card:hover .svc-name,.svc-card:hover .svc-list li{color:var(--cream)}
-.svc-card:hover .svc-dot{background:var(--lime)}
-.svc-icon{font-size:32px;margin-bottom:32px;display:block;position:relative;z-index:1;transition:color 0.4s}
-.svc-name{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:var(--black);margin-bottom:20px;position:relative;z-index:1;transition:color 0.4s;line-height:1.1}
-.svc-list{list-style:none;position:relative;z-index:1}
-.svc-list li{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:rgba(0,0,0,0.4);padding:6px 0;border-bottom:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;gap:8px;transition:color 0.4s}
-.svc-dot{width:4px;height:4px;border-radius:50%;background:rgba(0,0,0,0.2);flex-shrink:0;transition:background 0.4s}
+/* ── SERVICES ── */
+.services-section{padding:0 48px 120px}
+.services-head{margin-bottom:48px}
+.svc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.sv{border-radius:20px;border:1px solid var(--border);padding:36px 32px;background:var(--surface);cursor:pointer;position:relative;overflow:hidden;transition:border-color .3s,transform .3s}
+.sv::before{content:'';position:absolute;inset:0;background:var(--glow);opacity:0;transition:opacity .4s}
+.sv:hover{border-color:rgba(123,92,255,0.3);transform:translateY(-4px)}
+.sv:hover::before{opacity:1}
+.sv-icon{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:28px;transition:border-color .3s}
+.sv:hover .sv-icon{border-color:rgba(123,92,255,0.4)}
+.sv-name{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;letter-spacing:-0.3px;margin-bottom:12px}
+.sv-body{font-size:12px;font-weight:300;color:var(--muted);line-height:1.7}
+.sv-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px}
+.sv-tag{font-size:10px;font-weight:500;letter-spacing:0.5px;color:var(--muted);background:rgba(255,255,255,0.04);border:1px solid var(--border);padding:4px 10px;border-radius:6px}
+.sv-num{position:absolute;bottom:20px;right:24px;font-family:'Syne',sans-serif;font-size:48px;font-weight:800;color:rgba(255,255,255,0.03);line-height:1}
 
-/* PROCESS */
-.section-process{background:#0A0A0A;padding:120px 60px;color:var(--cream)}
-.process-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:80px}
-.process-title{font-family:'Playfair Display',serif;font-size:clamp(48px,6vw,80px);font-weight:900;font-style:italic;line-height:1}
-.process-meta{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);text-align:right}
-.process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.05)}
-.ps{background:#0A0A0A;padding:48px 36px}
-.ps-num{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3px;color:var(--red);margin-bottom:40px}
-.ps-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;color:var(--cream);margin-bottom:16px}
-.ps-body{font-size:13px;line-height:1.75;color:rgba(255,255,255,0.4);font-weight:300}
-.ps-tag{display:inline-block;margin-top:20px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.3);border-radius:20px}
+/* ── PROCESS ── */
+.process-section{padding:0 48px 120px}
+.process-inner{border:1px solid var(--border);border-radius:24px;overflow:hidden}
+.process-head{padding:56px 64px 48px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-end;background:var(--surface)}
+.process-steps{display:grid;grid-template-columns:repeat(4,1fr)}
+.ps{padding:48px 40px;border-right:1px solid var(--border);position:relative;transition:background .3s}
+.ps:last-child{border-right:none}
+.ps:hover{background:rgba(255,255,255,0.02)}
+.ps-num{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:32px}
+.ps-icon{font-size:28px;margin-bottom:20px;display:block}
+.ps-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;letter-spacing:-0.3px;margin-bottom:12px}
+.ps-body{font-size:12px;font-weight:300;color:var(--muted);line-height:1.75}
+.ps-bar{position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--border);overflow:hidden}
+.ps-bar::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:var(--accent);transition:left .4s cubic-bezier(.16,1,.3,1)}
+.ps:hover .ps-bar::after{left:0}
 
-/* CLIENTS */
-.section-clients{background:var(--cream);padding:80px 60px;border-top:1px solid rgba(0,0,0,0.08)}
-.clients-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(0,0,0,0.3);margin-bottom:48px}
-.clients-row{display:flex;align-items:center;gap:0;border-top:1px solid rgba(0,0,0,0.08);border-bottom:1px solid rgba(0,0,0,0.08)}
-.client-name{flex:1;text-align:center;padding:32px 20px;font-family:'Bebas Neue',sans-serif;font-size:clamp(18px,2.5vw,32px);letter-spacing:3px;color:rgba(0,0,0,0.15);border-right:1px solid rgba(0,0,0,0.08);cursor:pointer;transition:color 0.3s}
-.client-name:last-child{border-right:none}
-.client-name:hover{color:var(--black)}
+/* ── TESTIMONIAL ── */
+.testi-section{padding:0 48px 120px}
+.testi-inner{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:80px 80px;text-align:center;position:relative;overflow:hidden}
+.testi-bg{position:absolute;top:-60%;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(123,92,255,0.08) 0%,transparent 70%);pointer-events:none}
+.testi-quote{font-family:'DM Serif Display',serif;font-size:clamp(24px,3vw,40px);font-style:italic;font-weight:400;line-height:1.4;color:var(--text);max-width:800px;margin:0 auto 40px;position:relative;z-index:1}
+.testi-quote::before{content:'\201C';font-size:80px;color:var(--accent);opacity:0.3;position:absolute;top:-20px;left:-20px;font-family:'DM Serif Display',serif;line-height:1}
+.testi-author{display:flex;align-items:center;justify-content:center;gap:14px;position:relative;z-index:1}
+.testi-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--pink));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600}
+.testi-name{font-size:14px;font-weight:500}
+.testi-role{font-size:12px;color:var(--muted);margin-top:2px}
 
-/* CTA */
-.section-cta{background:var(--black);padding:0;display:grid;grid-template-columns:1fr 1fr;min-height:70vh}
-.cta-left{padding:100px 60px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid rgba(255,255,255,0.06)}
-.cta-eyebrow{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:40px;display:flex;align-items:center;gap:12px}
-.cta-eyebrow::before{content:'';width:30px;height:1px;background:var(--lime)}
-.cta-h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(60px,8vw,110px);letter-spacing:2px;line-height:0.9;color:var(--cream)}
-.cta-h2 span{color:var(--lime)}
-.cta-right{padding:100px 60px;display:flex;flex-direction:column;justify-content:space-between}
-.cta-right-top{font-size:16px;line-height:1.8;color:rgba(255,255,255,0.45);font-weight:300;max-width:400px}
-.cta-right-bottom{}
-.cta-btn{display:inline-block;background:var(--lime);color:var(--black);padding:20px 52px;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;text-decoration:none;border-radius:0;transition:background 0.3s;margin-bottom:24px}
-.cta-btn:hover{background:#fff}
-.cta-email{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1px;color:rgba(255,255,255,0.3)}
-.cta-email a{color:rgba(255,255,255,0.5);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.2);transition:color 0.2s}
-.cta-email a:hover{color:var(--lime)}
+/* ── CLIENTS ── */
+.clients-section{padding:0 48px 120px}
+.clients-inner{border:1px solid var(--border);border-radius:20px;overflow:hidden}
+.clients-label{padding:28px 40px;border-bottom:1px solid var(--border);font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--muted);background:var(--surface)}
+.clients-row{display:flex}
+.cn{flex:1;padding:32px 20px;text-align:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.12);border-right:1px solid var(--border);transition:color .3s,background .3s;cursor:default}
+.cn:last-child{border-right:none}
+.cn:hover{color:var(--muted);background:rgba(255,255,255,0.02)}
 
-/* FOOTER */
-footer{background:#030303;padding:60px;display:flex;justify-content:space-between;align-items:flex-end}
-.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,72px);letter-spacing:4px;color:rgba(255,255,255,0.07);line-height:1}
-.footer-meta{text-align:right}
-.footer-copy{font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.2);letter-spacing:1px;margin-bottom:12px}
-.footer-links{display:flex;gap:24px;justify-content:flex-end}
-.footer-links a{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.2);text-decoration:none;transition:color 0.2s}
-.footer-links a:hover{color:var(--lime)}
+/* ── CTA ── */
+.cta-section{padding:0 48px 120px}
+.cta-inner{border-radius:24px;overflow:hidden;position:relative;background:var(--surface);border:1px solid var(--border);padding:100px 80px;text-align:center}
+.cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:400px;background:radial-gradient(ellipse,rgba(123,92,255,0.12) 0%,transparent 70%);pointer-events:none}
+.cta-eyebrow{font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:24px;position:relative;z-index:1}
+.cta-title{font-family:'Syne',sans-serif;font-size:clamp(48px,6vw,80px);font-weight:800;letter-spacing:-3px;line-height:1;margin-bottom:20px;position:relative;z-index:1}
+.cta-title span{color:var(--lime)}
+.cta-body{font-size:15px;font-weight:300;color:var(--muted);margin-bottom:48px;line-height:1.7;position:relative;z-index:1}
+.cta-btns{display:flex;gap:12px;justify-content:center;position:relative;z-index:1}
+.cta-p{display:inline-flex;align-items:center;gap:10px;background:var(--lime);color:var(--bg);padding:16px 36px;border-radius:12px;font-size:13px;font-weight:600;text-decoration:none;letter-spacing:0.3px;transition:opacity .2s,transform .2s}
+.cta-p:hover{opacity:.9;transform:translateY(-2px)}
+.cta-s{display:inline-flex;align-items:center;gap:10px;color:var(--text);padding:16px 36px;border-radius:12px;font-size:13px;font-weight:400;text-decoration:none;border:1px solid var(--border);letter-spacing:0.3px;transition:all .2s}
+.cta-s:hover{border-color:rgba(255,255,255,0.15);background:rgba(255,255,255,0.04)}
 
-/* ANIMATIONS */
-@keyframes fadeIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.7s cubic-bezier(.16,1,.3,1),transform 0.7s cubic-bezier(.16,1,.3,1)}
-.reveal.visible{opacity:1;transform:translateY(0)}
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:72px 48px 48px;background:var(--surface)}
+.footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:60px;padding-bottom:60px;border-bottom:1px solid var(--border);margin-bottom:40px}
+.footer-brand-name{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;letter-spacing:-0.5px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.footer-brand-desc{font-size:13px;font-weight:300;color:var(--muted);line-height:1.75;max-width:280px;margin-bottom:28px}
+.footer-socials{display:flex;gap:8px}
+.fs{width:34px;height:34px;border-radius:8px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);text-decoration:none;transition:all .2s}
+.fs:hover{border-color:rgba(255,255,255,0.15);color:var(--text);background:rgba(255,255,255,0.05)}
+.footer-col-title{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text);margin-bottom:20px}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13px;font-weight:300;color:var(--muted);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--text)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center}
+.footer-copy{font-size:12px;font-weight:300;color:rgba(255,255,255,0.2)}
+.footer-badge{font-size:11px;font-weight:500;letter-spacing:1px;color:rgba(255,255,255,0.2);display:flex;align-items:center;gap:8px}
+.footer-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--lime);opacity:0.5}
 
-@media(max-width:900px){
-  nav{padding:20px 24px}
-  .hero-main{grid-template-columns:1fr}
-  .hero-right{display:none}
-  .hero-cta-bar{padding:20px 24px}
-  .hero-left{padding:120px 24px 60px}
-  .work-item{grid-template-columns:40px 1fr 120px;padding:20px 24px}
-  .wi-year{display:none}
-  .section-about{grid-template-columns:1fr}
-  .about-right{display:none}
-  .phil-items{grid-template-columns:1fr}
-  .services-grid{grid-template-columns:1fr 1fr}
-  .services-header{grid-template-columns:1fr;padding:0 24px 40px}
+/* ── SCROLL REVEAL ── */
+.r{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.r.v{opacity:1;transform:translateY(0)}
+.r.d1{transition-delay:.08s}.r.d2{transition-delay:.16s}.r.d3{transition-delay:.24s}.r.d4{transition-delay:.32s}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .work-grid{grid-template-columns:1fr}.wc.wide{grid-column:span 1}
+  .svc-grid{grid-template-columns:1fr 1fr}
   .process-steps{grid-template-columns:1fr 1fr}
-  .section-process{padding:80px 24px}
-  .section-cta{grid-template-columns:1fr}
-  .cta-right{padding:60px 60px 80px}
-  .clients-row{flex-wrap:wrap}
-  .client-name{min-width:33%}
-  footer{flex-direction:column;gap:40px;align-items:flex-start;padding:40px 24px}
-  .footer-meta{text-align:left}
-  .footer-links{justify-content:flex-start}
+  .about-inner{grid-template-columns:1fr}
+  .about-r{border-top:1px solid var(--border)}
+  .footer-top{grid-template-columns:1fr 1fr;gap:40px}
+}
+@media(max-width:768px){
+  nav{padding:0 24px}
+  .n-links{display:none}
+  .n-menu{display:flex}
+  .hero,.work-section,.about-section,.services-section,.process-section,.testi-section,.clients-section,.cta-section{padding-left:24px;padding-right:24px}
+  .hero-title{letter-spacing:-2px}
+  .hero-stats{flex-wrap:wrap}
+  .hs{flex:0 0 50%}
+  .svc-grid{grid-template-columns:1fr}
+  .process-steps{grid-template-columns:1fr}
+  .testi-inner,.cta-inner{padding:48px 32px}
+  .about-l,.about-r{padding:48px 36px}
+  footer{padding:48px 24px}
+  .footer-top{grid-template-columns:1fr;gap:32px}
+  .cta-btns{flex-direction:column;align-items:center}
 }
 </style>
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+<div id="cur"></div>
+<div id="cur2"></div>
 
-<div class="loader" id="loader">
-  <div class="loader-text">
-    <span style="animation-delay:0s">M</span><span style="animation-delay:0.05s">I</span><span style="animation-delay:0.1s">X</span><span style="animation-delay:0.15s">I</span><span style="animation-delay:0.2s">U</span><span style="animation-delay:0.25s">M</span><span style="animation-delay:0.4s" style="margin-left:20px">&nbsp;</span><span style="animation-delay:0.45s">L</span><span style="animation-delay:0.5s">A</span><span style="animation-delay:0.55s">B</span>
-  </div>
-</div>
-
+<!-- NAV -->
 <nav>
-  <a href="#" class="logo">MX LAB</a>
-  <div class="nav-r">
-    <a href="#" class="nav-link">Work</a>
-    <a href="#" class="nav-link">Studio</a>
-    <a href="#" class="nav-link">Contact</a>
-    <div class="nav-open" aria-label="Menu">
-      <span></span><span></span>
-    </div>
+  <a href="#" class="n-logo"><span class="n-logo-dot"></span>Mixium Lab</a>
+  <div class="n-links">
+    <a href="#" class="n-link">Work</a>
+    <a href="#" class="n-link">Studio</a>
+    <a href="#" class="n-link">Services</a>
+    <a href="#" class="n-link">Journal</a>
+    <a href="#" class="n-cta">Start a Project <span style="font-size:14px">↗</span></a>
   </div>
+  <div class="n-menu" aria-label="Menu"><span></span><span></span></div>
 </nav>
 
-<!-- HERO -->
+<!-- ═══════════════ HERO ═══════════════ -->
 <section class="hero">
-  <div class="hero-bg-grid"></div>
-  <div class="hero-main">
-    <div class="hero-left">
-      <div class="hero-eyebrow">
-        <div class="hero-eyebrow-line"></div>
-        <span class="hero-eyebrow-text">Design Studio — Dhaka / Global</span>
-      </div>
-      <div class="hero-title-block">
-        <h1 class="hero-h1">
-          WE<br>
-          <span class="italic">shape</span><br>
-          <span class="outline">DIGITAL</span><br>
-          FUTURES
-        </h1>
-      </div>
-      <div class="hero-bottom-left">
-        <p class="hero-desc">Mixium Lab is where bold ideas meet obsessive craft. We build brands, interfaces, and experiences that outlast trends.</p>
-        <div class="hero-scroll">Scroll</div>
-      </div>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <div class="hero-badge-dot"></div>
+      Available for new projects · Dhaka & Remote
     </div>
-    <div class="hero-right">
-      <div class="hero-number">01</div>
-      <div class="hero-tag-cloud">
-        <span class="hero-tag active">Branding</span>
-        <span class="hero-tag">UI Design</span>
-        <span class="hero-tag">Motion</span>
-        <span class="hero-tag">Web Dev</span>
-        <span class="hero-tag">Strategy</span>
-        <span class="hero-tag">Mobile</span>
-        <span class="hero-tag">AI Design</span>
-        <span class="hero-tag">Systems</span>
-      </div>
+
+    <h1 class="hero-title">
+      <span class="line"><span class="word" style="animation-delay:.1s">We <span class="ital">craft</span></span></span>
+      <span class="line"><span class="word" style="animation-delay:.22s"><span class="hi">digital</span></span></span>
+      <span class="line"><span class="word" style="animation-delay:.34s">experiences</span></span>
+      <span class="line"><span class="word" style="animation-delay:.46s">that <span class="ital">endure.</span></span></span>
+    </h1>
+
+    <p class="hero-sub">Mixium Lab is a full-service design agency building brands, products, and interfaces for companies that refuse to be ordinary. We combine obsessive craft with strategic clarity.</p>
+
+    <div class="hero-actions">
+      <a href="#" class="btn-main">See Our Work <span class="arr">↗</span></a>
+      <a href="#" class="btn-outline">Watch Showreel ▶</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hs"><div class="hs-num">150+</div><div class="hs-label">Projects Shipped</div></div>
+      <div class="hs"><div class="hs-num">6+</div><div class="hs-label">Years of Craft</div></div>
+      <div class="hs"><div class="hs-num">98%</div><div class="hs-label">Client Retention</div></div>
+      <div class="hs"><div class="hs-num">15M+</div><div class="hs-label">Users Reached</div></div>
     </div>
   </div>
-  <div class="hero-cta-bar">
-    <a href="#">START A PROJECT <span>→</span></a>
-    <span>EST. 2019 · MIXIUM LAB · DHAKA</span>
+
+  <div class="scroll-ind">
+    <div class="scroll-line"></div>
+    <span class="scroll-text">Scroll to explore</span>
   </div>
 </section>
 
-<!-- TICKER -->
-<div class="ticker">
-  <div class="ticker-inner">
-    <span class="ticker-item hi">MIXIUM LAB</span>
-    <span class="ticker-item">BRAND DESIGN</span>
-    <span class="ticker-item">UX STRATEGY</span>
-    <span class="ticker-item hi">★</span>
-    <span class="ticker-item">WEB DEVELOPMENT</span>
-    <span class="ticker-item">MOTION</span>
-    <span class="ticker-item hi">AWARD WINNING</span>
-    <span class="ticker-item">PRODUCT DESIGN</span>
-    <span class="ticker-item">SINCE 2019</span>
-    <span class="ticker-item hi">MIXIUM LAB</span>
-    <span class="ticker-item">BRAND DESIGN</span>
-    <span class="ticker-item">UX STRATEGY</span>
-    <span class="ticker-item hi">★</span>
-    <span class="ticker-item">WEB DEVELOPMENT</span>
-    <span class="ticker-item">MOTION</span>
-    <span class="ticker-item hi">AWARD WINNING</span>
-    <span class="ticker-item">PRODUCT DESIGN</span>
-    <span class="ticker-item">SINCE 2019</span>
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-inner">
+    <span class="mi">Brand Identity <span class="mi-dot"></span></span>
+    <span class="mi">UI / UX Design <span class="mi-dot"></span></span>
+    <span class="mi">Web Development <span class="mi-dot"></span></span>
+    <span class="mi">Motion Design <span class="mi-dot"></span></span>
+    <span class="mi">Product Strategy <span class="mi-dot"></span></span>
+    <span class="mi">Design Systems <span class="mi-dot"></span></span>
+    <span class="mi">Brand Identity <span class="mi-dot"></span></span>
+    <span class="mi">UI / UX Design <span class="mi-dot"></span></span>
+    <span class="mi">Web Development <span class="mi-dot"></span></span>
+    <span class="mi">Motion Design <span class="mi-dot"></span></span>
+    <span class="mi">Product Strategy <span class="mi-dot"></span></span>
+    <span class="mi">Design Systems <span class="mi-dot"></span></span>
   </div>
 </div>
 
-<!-- WORK -->
-<section class="section-work">
-  <div class="work-header reveal">
-    <h2 class="work-title"><em>Selected</em><br><span style="font-style:italic">Work</span></h2>
-    <div class="work-count">06 Projects</div>
+<!-- ═══════════════ WORK ═══════════════ -->
+<section class="work-section section r">
+  <div class="work-head">
+    <div>
+      <div class="sec-eyebrow">Selected Work</div>
+      <h2 class="sec-title">Projects we're <span class="dm">proud of</span></h2>
+    </div>
+    <a href="#" class="see-all">View all work ↗</a>
   </div>
-  <div class="work-item reveal"><span class="wi-num">01</span><span class="wi-name">Nexora<sub>Fintech</sub></span><span class="wi-type">Brand + UI</span><span class="wi-year">2024 <span class="wi-arrow">→</span></span></div>
-  <div class="work-item reveal"><span class="wi-num">02</span><span class="wi-name">Tular CMS<sub>Platform</sub></span><span class="wi-type">Product Design</span><span class="wi-year">2024 <span class="wi-arrow">→</span></span></div>
-  <div class="work-item reveal"><span class="wi-num">03</span><span class="wi-name">Growfund<sub>Investment</sub></span><span class="wi-type">Mobile / Web</span><span class="wi-year">2023 <span class="wi-arrow">→</span></span></div>
-  <div class="work-item reveal"><span class="wi-num">04</span><span class="wi-name">Orbita<sub>Analytics</sub></span><span class="wi-type">Motion + Dev</span><span class="wi-year">2023 <span class="wi-arrow">→</span></span></div>
-  <div class="work-item reveal"><span class="wi-num">05</span><span class="wi-name">Kirki UI<sub>Design System</sub></span><span class="wi-type">Design System</span><span class="wi-year">2022 <span class="wi-arrow">→</span></span></div>
-  <div class="work-item reveal"><span class="wi-num">06</span><span class="wi-name">Archform<sub>Architecture</sub></span><span class="wi-type">Web App</span><span class="wi-year">2022 <span class="wi-arrow">→</span></span></div>
-</section>
 
-<!-- ABOUT -->
-<section class="section-about">
-  <div class="about-left reveal">
-    <div class="about-left-top">
-      <div class="about-label">About Studio</div>
-      <div class="about-big">
-        DESIGN<br>
-        FOR THE<br>
-        <span class="red">BOLD</span><br>
-        & <span class="blue">BRAVE</span>
+  <div class="work-grid">
+    <div class="wc r d1">
+      <div class="wc-thumb">
+        <div class="wc-bg wc-bg1"></div>
+        <div class="wc-deco">NX</div>
+        <span class="wc-tag">Fintech · 2024</span>
+        <span class="wc-arrow">↗</span>
       </div>
-      <p class="about-body">We're not here to make things that look good in screenshots. We build things that work — for real people, in real conditions, at real scale. Our process is obsessive. Our standards are high. Our results speak.</p>
-    </div>
-    <div class="about-left-bottom">
-      <a href="#" class="about-cta">Our Story</a>
-      <a href="#" class="about-cta">The Team</a>
-    </div>
-  </div>
-  <div class="about-right reveal">
-    <div class="about-stats-grid">
-      <div class="asg-cell">
-        <div class="asg-num">150<sup>+</sup></div>
-        <div class="asg-label">Projects<br>Delivered</div>
-      </div>
-      <div class="asg-cell">
-        <div class="asg-num">15<sup>M+</sup></div>
-        <div class="asg-label">Users Reached<br>Globally</div>
-      </div>
-      <div class="asg-cell">
-        <div class="asg-num">06<sup>+</sup></div>
-        <div class="asg-label">Years of<br>Excellence</div>
-      </div>
-      <div class="asg-cell">
-        <div class="asg-num">98<sup>%</sup></div>
-        <div class="asg-label">Client<br>Retention</div>
+      <div class="wc-info">
+        <div class="wc-name">Nexora — Brand & Product</div>
+        <div class="wc-meta"><span class="wc-type">Branding · UI/UX · Web</span><span class="wc-year">2024</span></div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- PHILOSOPHY -->
-<section class="section-phil">
-  <div class="phil-bg">LAB</div>
-  <div class="phil-label">Our Philosophy</div>
-  <div class="phil-items">
-    <div class="phil-item reveal">
-      <div class="phil-n">01</div>
-      <div class="phil-title">Clarity Over Complexity</div>
-      <p class="phil-body">Every layer we add must earn its place. We strip away what doesn't serve the user until only the essential remains — then make that beautiful.</p>
+    <div class="wc r d2">
+      <div class="wc-thumb">
+        <div class="wc-bg wc-bg2"></div>
+        <div class="wc-deco">GF</div>
+        <span class="wc-tag">Investment · 2024</span>
+        <span class="wc-arrow">↗</span>
+      </div>
+      <div class="wc-info">
+        <div class="wc-name">Growfund — Mobile App</div>
+        <div class="wc-meta"><span class="wc-type">Product Design · React Native</span><span class="wc-year">2024</span></div>
+      </div>
     </div>
-    <div class="phil-item reveal" style="transition-delay:0.1s">
-      <div class="phil-n">02</div>
-      <div class="phil-title">Systems Thinking</div>
-      <p class="phil-body">Great design isn't isolated moments of beauty. It's a coherent language that scales — from icon to interface to entire brand ecosystem.</p>
+    <div class="wc wide r d1">
+      <div class="wc-thumb">
+        <div class="wc-bg wc-bg3"></div>
+        <div class="wc-deco" style="font-size:200px;opacity:0.04">OR</div>
+        <span class="wc-tag">Analytics · 2023</span>
+        <span class="wc-arrow">↗</span>
+      </div>
+      <div class="wc-info">
+        <div class="wc-name">Orbita — 3D Data Visualization Platform</div>
+        <div class="wc-meta"><span class="wc-type">Motion · Web App · Three.js</span><span class="wc-year">2023</span></div>
+      </div>
     </div>
-    <div class="phil-item reveal" style="transition-delay:0.2s">
-      <div class="phil-n">03</div>
-      <div class="phil-title">Craft Is Non-Negotiable</div>
-      <p class="phil-body">We're obsessed with the details nobody notices until they're missing. Pixel alignment. Micro-animation timing. Typography rhythm. All of it.</p>
+    <div class="wc r d1">
+      <div class="wc-thumb">
+        <div class="wc-bg wc-bg4"></div>
+        <div class="wc-deco">TC</div>
+        <span class="wc-tag">Platform · 2023</span>
+        <span class="wc-arrow">↗</span>
+      </div>
+      <div class="wc-info">
+        <div class="wc-name">Tular CMS</div>
+        <div class="wc-meta"><span class="wc-type">Product Design · System</span><span class="wc-year">2023</span></div>
+      </div>
     </div>
-  </div>
-</section>
-
-<!-- SERVICES -->
-<section class="section-services">
-  <div class="services-header reveal">
-    <h2 class="services-title">WHAT<br>WE DO</h2>
-    <p class="services-sub">Four disciplines. One mission: to make the complex feel effortless and the ordinary feel extraordinary.</p>
-  </div>
-  <div class="services-grid">
-    <div class="svc-card reveal">
-      <span class="svc-icon">◈</span>
-      <div class="svc-name">Brand<br>Identity</div>
-      <ul class="svc-list">
-        <li><span class="svc-dot"></span>Logo & Visual System</li>
-        <li><span class="svc-dot"></span>Brand Strategy</li>
-        <li><span class="svc-dot"></span>Art Direction</li>
-        <li><span class="svc-dot"></span>Brand Guidelines</li>
-      </ul>
-    </div>
-    <div class="svc-card reveal" style="transition-delay:0.08s">
-      <span class="svc-icon">◉</span>
-      <div class="svc-name">UI/UX<br>Design</div>
-      <ul class="svc-list">
-        <li><span class="svc-dot"></span>Product Design</li>
-        <li><span class="svc-dot"></span>Design Systems</li>
-        <li><span class="svc-dot"></span>Prototyping</li>
-        <li><span class="svc-dot"></span>User Research</li>
-      </ul>
-    </div>
-    <div class="svc-card reveal" style="transition-delay:0.16s">
-      <span class="svc-icon">◇</span>
-      <div class="svc-name">Web<br>Development</div>
-      <ul class="svc-list">
-        <li><span class="svc-dot"></span>Frontend Engineering</li>
-        <li><span class="svc-dot"></span>CMS & Platforms</li>
-        <li><span class="svc-dot"></span>Performance</li>
-        <li><span class="svc-dot"></span>Webflow / React</li>
-      </ul>
-    </div>
-    <div class="svc-card reveal" style="transition-delay:0.24s">
-      <span class="svc-icon">◎</span>
-      <div class="svc-name">Motion<br>& 3D</div>
-      <ul class="svc-list">
-        <li><span class="svc-dot"></span>UI Animation</li>
-        <li><span class="svc-dot"></span>Video Production</li>
-        <li><span class="svc-dot"></span>3D Environments</li>
-        <li><span class="svc-dot"></span>Interactive Scenes</li>
-      </ul>
+    <div class="wc r d2">
+      <div class="wc-thumb">
+        <div class="wc-bg wc-bg1" style="background:linear-gradient(135deg,#0a1a0a,#0a2b1a,#050a05)"></div>
+        <div class="wc-deco">KI</div>
+        <span class="wc-tag">System · 2022</span>
+        <span class="wc-arrow">↗</span>
+      </div>
+      <div class="wc-info">
+        <div class="wc-name">Kirki Design System</div>
+        <div class="wc-meta"><span class="wc-type">Design System · Components</span><span class="wc-year">2022</span></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- PROCESS -->
-<section class="section-process">
-  <div class="process-header reveal">
-    <h2 class="process-title">How We<br>Work</h2>
-    <div class="process-meta">Four steps.<br>Zero shortcuts.</div>
-  </div>
-  <div class="process-steps">
-    <div class="ps reveal">
-      <div class="ps-num">— 01</div>
-      <div class="ps-title">Discover</div>
-      <p class="ps-body">We start by listening. Deep research into your market, audience, competitors, and goals forms the foundation of every decision.</p>
-      <span class="ps-tag">Research · Strategy</span>
+<!-- ═══════════════ ABOUT ═══════════════ -->
+<section class="about-section section r">
+  <div class="about-inner">
+    <div class="about-l">
+      <div>
+        <div class="sec-eyebrow">About Studio</div>
+        <h2 class="about-headline">Design that <em>thinks</em> before it looks.</h2>
+        <p class="about-body">We're a remote-first design studio based in Dhaka. Since 2019, we've partnered with startups, scale-ups, and established brands to build digital products that don't just look beautiful — they work beautifully.<br><br>Our team of 12 designers, developers, and strategists brings a research-first mindset to every engagement. We don't decorate problems — we solve them.</p>
+      </div>
+      <div class="about-links">
+        <a href="#" class="al-btn">Our Story</a>
+        <a href="#" class="al-btn">Meet the Team</a>
+        <a href="#" class="al-btn solid">Work With Us ↗</a>
+      </div>
     </div>
-    <div class="ps reveal" style="transition-delay:0.08s">
-      <div class="ps-num">— 02</div>
-      <div class="ps-title">Define</div>
-      <p class="ps-body">Insights become direction. We craft a clear creative brief, define success metrics, and align on a strategic vision before a single pixel is drawn.</p>
-      <span class="ps-tag">Brief · Direction</span>
-    </div>
-    <div class="ps reveal" style="transition-delay:0.16s">
-      <div class="ps-num">— 03</div>
-      <div class="ps-title">Design</div>
-      <p class="ps-body">Where strategy becomes form. Exploration, iteration, refinement. We push past the obvious to find the unexpected — then perfect it.</p>
-      <span class="ps-tag">Craft · Iteration</span>
-    </div>
-    <div class="ps reveal" style="transition-delay:0.24s">
-      <div class="ps-num">— 04</div>
-      <div class="ps-title">Deliver</div>
-      <p class="ps-body">Launch is just the beginning. We build, test, deploy, and stay on as long as you need us. Our work doesn't end at handoff.</p>
-      <span class="ps-tag">Build · Launch</span>
+    <div class="about-r">
+      <div class="sec-eyebrow">By the Numbers</div>
+      <div class="about-stats">
+        <div class="as-cell"><div class="as-num">150<span class="as-unit">+</span></div><div class="as-label">Projects Delivered</div></div>
+        <div class="as-cell"><div class="as-num">98<span class="as-unit">%</span></div><div class="as-label">Client Retention Rate</div></div>
+        <div class="as-cell"><div class="as-num">15<span class="as-unit">M+</span></div><div class="as-label">End Users Reached</div></div>
+        <div class="as-cell"><div class="as-num">12<span class="as-unit">★</span></div><div class="as-label">Core Team Members</div></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- CLIENTS -->
-<section class="section-clients reveal">
-  <div class="clients-label">Trusted By</div>
-  <div class="clients-row">
-    <div class="client-name">NEXORA</div>
-    <div class="client-name">TULAR</div>
-    <div class="client-name">GROWFUND</div>
-    <div class="client-name">ORBITA</div>
-    <div class="client-name">KIRKI</div>
-    <div class="client-name">ARCHFORM</div>
+<!-- ═══════════════ SERVICES ═══════════════ -->
+<section class="services-section section">
+  <div class="services-head r">
+    <div class="sec-eyebrow">What We Do</div>
+    <h2 class="sec-title">Four disciplines, <span class="dm">one vision</span></h2>
   </div>
-</section>
-
-<!-- CTA -->
-<section class="section-cta">
-  <div class="cta-left reveal">
-    <div class="cta-eyebrow">Let's Build Something</div>
-    <h2 class="cta-h2">READY<br>TO GO<br><span>BOLD?</span></h2>
-  </div>
-  <div class="cta-right reveal">
-    <div class="cta-right-top">We partner with founders, brands, and companies who refuse to be ordinary. If that sounds like you — let's talk.</div>
-    <div class="cta-right-bottom">
-      <a href="#" class="cta-btn">START A PROJECT →</a><br>
-      <div class="cta-email">Or email us at <a href="mailto:hello@mixiumlab.io">hello@mixiumlab.io</a></div>
+  <div class="svc-grid">
+    <div class="sv r d1">
+      <div class="sv-icon">◈</div>
+      <div class="sv-name">Brand Identity</div>
+      <p class="sv-body">Visual systems that communicate who you are before you say a word. Strategy, identity, and the aesthetic language of your brand.</p>
+      <div class="sv-tags"><span class="sv-tag">Logo</span><span class="sv-tag">Visual System</span><span class="sv-tag">Guidelines</span></div>
+      <div class="sv-num">01</div>
+    </div>
+    <div class="sv r d2">
+      <div class="sv-icon">◉</div>
+      <div class="sv-name">UI / UX Design</div>
+      <p class="sv-body">Interfaces that feel inevitable — where every interaction is obvious, every flow is effortless, every pixel earns its place.</p>
+      <div class="sv-tags"><span class="sv-tag">Product</span><span class="sv-tag">Research</span><span class="sv-tag">Systems</span></div>
+      <div class="sv-num">02</div>
+    </div>
+    <div class="sv r d3">
+      <div class="sv-icon">◇</div>
+      <div class="sv-name">Development</div>
+      <p class="sv-body">We build what we design. High-performance, accessible frontends and full-stack web applications built to scale.</p>
+      <div class="sv-tags"><span class="sv-tag">React</span><span class="sv-tag">Next.js</span><span class="sv-tag">Webflow</span></div>
+      <div class="sv-num">03</div>
+    </div>
+    <div class="sv r d4">
+      <div class="sv-icon">◎</div>
+      <div class="sv-name">Motion & 3D</div>
+      <p class="sv-body">Animation that tells stories. From micro-interactions to full cinematic brand films and immersive 3D environments.</p>
+      <div class="sv-tags"><span class="sv-tag">After Effects</span><span class="sv-tag">Three.js</span><span class="sv-tag">GSAP</span></div>
+      <div class="sv-num">04</div>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ═══════════════ PROCESS ═══════════════ -->
+<section class="process-section section r">
+  <div class="process-inner">
+    <div class="process-head">
+      <div>
+        <div class="sec-eyebrow">How We Work</div>
+        <h2 class="sec-title">A process built for <span class="dm">clarity</span></h2>
+      </div>
+      <div style="font-size:13px;font-weight:300;color:var(--muted);max-width:280px;text-align:right;line-height:1.7">Four steps. No shortcuts. No hand-wavy promises. Just a proven path from problem to polished product.</div>
+    </div>
+    <div class="process-steps">
+      <div class="ps">
+        <div class="ps-num">01 — Discover</div>
+        <span class="ps-icon">⌖</span>
+        <div class="ps-title">Deep Research</div>
+        <p class="ps-body">We immerse in your world — your market, users, competitors, and goals — before forming any opinions or creating anything.</p>
+        <div class="ps-bar"></div>
+      </div>
+      <div class="ps">
+        <div class="ps-num">02 — Define</div>
+        <span class="ps-icon">◎</span>
+        <div class="ps-title">Sharp Strategy</div>
+        <p class="ps-body">Insights crystallize into direction. Clear creative brief, defined success metrics, aligned vision. Everyone knows where we're going.</p>
+        <div class="ps-bar"></div>
+      </div>
+      <div class="ps">
+        <div class="ps-num">03 — Design</div>
+        <span class="ps-icon">◈</span>
+        <div class="ps-title">Obsessive Craft</div>
+        <p class="ps-body">Exploration, iteration, refinement. We push past obvious solutions to find the unexpected — then perfect every detail.</p>
+        <div class="ps-bar"></div>
+      </div>
+      <div class="ps">
+        <div class="ps-num">04 — Deliver</div>
+        <span class="ps-icon">◇</span>
+        <div class="ps-title">Build & Beyond</div>
+        <p class="ps-body">We ship production-ready work and stay on to measure, iterate, and grow alongside you. Launch is just the beginning.</p>
+        <div class="ps-bar"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ TESTIMONIAL ═══════════════ -->
+<section class="testi-section section r">
+  <div class="testi-inner">
+    <div class="testi-bg"></div>
+    <p class="testi-quote">Mixium Lab didn't just redesign our product — they fundamentally changed how our users think about us. The craft and strategic depth they brought is unlike anything we've experienced with another agency.</p>
+    <div class="testi-author">
+      <div class="testi-avatar">SR</div>
+      <div>
+        <div class="testi-name">Sarah Rahman</div>
+        <div class="testi-role">CEO, Nexora — Series A Fintech</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CLIENTS ═══════════════ -->
+<section class="clients-section section r">
+  <div class="clients-inner">
+    <div class="clients-label">Trusted By</div>
+    <div class="clients-row">
+      <div class="cn">Nexora</div>
+      <div class="cn">Tular</div>
+      <div class="cn">Growfund</div>
+      <div class="cn">Orbita</div>
+      <div class="cn">Kirki</div>
+      <div class="cn">Archform</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CTA ═══════════════ -->
+<section class="cta-section section r">
+  <div class="cta-inner">
+    <div class="cta-glow"></div>
+    <div class="cta-eyebrow">Let's Create Together</div>
+    <h2 class="cta-title">Ready to build<br>something <span>great?</span></h2>
+    <p class="cta-body">We take on a limited number of projects each quarter.<br>Let's talk about yours before the spots are gone.</p>
+    <div class="cta-btns">
+      <a href="#" class="cta-p">Start a Project ↗</a>
+      <a href="#" class="cta-s">hello@mixiumlab.io</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
 <footer>
-  <div class="footer-logo">MIXIUM<br>LAB</div>
-  <div class="footer-meta">
-    <div class="footer-copy">© 2026 Mixium Lab. All rights reserved.</div>
-    <div class="footer-links">
-      <a href="#">Privacy</a>
-      <a href="#">Terms</a>
-      <a href="#">Instagram</a>
-      <a href="#">Behance</a>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name"><span class="n-logo-dot"></span>Mixium Lab</div>
+      <p class="footer-brand-desc">Building the tools, brands, and digital products that power the modern web. Based in Dhaka. Working globally.</p>
+      <div class="footer-socials">
+        <a href="#" class="fs">Be</a>
+        <a href="#" class="fs">Dr</a>
+        <a href="#" class="fs">In</a>
+        <a href="#" class="fs">Tw</a>
+      </div>
     </div>
+    <div>
+      <div class="footer-col-title">Work</div>
+      <ul class="footer-links">
+        <li><a href="#">Brand Identity</a></li>
+        <li><a href="#">UI/UX Design</a></li>
+        <li><a href="#">Development</a></li>
+        <li><a href="#">Motion & 3D</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Studio</div>
+      <ul class="footer-links">
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">The Team</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Journal</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Contact</div>
+      <ul class="footer-links">
+        <li><a href="#">Start a Project</a></li>
+        <li><a href="#">hello@mixiumlab.io</a></li>
+        <li><a href="#">+880 17XX XXX XXX</a></li>
+        <li><a href="#">Dhaka, Bangladesh</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 Mixium Lab. All rights reserved.</div>
+    <div class="footer-badge">Available for new projects</div>
   </div>
 </footer>
 
 <script>
-const cursor=document.getElementById('cursor');
-const ring=document.getElementById('cursorRing');
+/* cursor */
+const cur=document.getElementById('cur'),cur2=document.getElementById('cur2');
 let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
-function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing)}
-animRing();
-document.querySelectorAll('a,button,.work-item,.svc-card,.brand-card').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{cursor.style.width='20px';cursor.style.height='20px';ring.style.width='60px';ring.style.height='60px'});
-  el.addEventListener('mouseleave',()=>{cursor.style.width='12px';cursor.style.height='12px';ring.style.width='40px';ring.style.height='40px'});
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+});
+(function loop(){
+  rx+=(mx-rx)*.1;ry+=(my-ry)*.1;
+  cur2.style.left=rx+'px';cur2.style.top=ry+'px';
+  requestAnimationFrame(loop);
+})();
+document.querySelectorAll('a,button,.wc,.sv,.ps').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='16px';cur.style.height='16px';cur2.style.width='56px';cur2.style.height='56px'});
+  el.addEventListener('mouseleave',()=>{cur.style.width='8px';cur.style.height='8px';cur2.style.width='36px';cur2.style.height='36px'});
 });
 
-setTimeout(()=>{document.getElementById('loader').classList.add('gone')},1600);
-
+/* scroll reveal */
 const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
-},{threshold:0.1});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('v')});
+},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.r').forEach(el=>obs.observe(el));
 
-document.querySelectorAll('.hero-tag').forEach(tag=>{
-  tag.addEventListener('click',()=>{
-    document.querySelectorAll('.hero-tag').forEach(t=>t.classList.remove('active'));
-    tag.classList.add('active');
-  });
-});
+/* hero words already animate via CSS */
 </script>
 </body>
 </html>
